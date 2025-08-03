@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Bingo Literário</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: #green;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      color: #b30000;
+      margin-bottom: 10px;
+      text-shadow: 1px 1px 1px #fff;
+    }
+
+    #bingo-container {
+      background: #fff;
+      border: 4px solid #b30000;
+      border-radius: 15px;
+      padding: 20px;
+      max-width: 700px;
+      width: 100%;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+
+    #last-draw {
+      font-size: 1.8em;
+      margin: 20px 0;
+      color: #00509e;
+      font-weight: bold;
+      min-height: 50px;
+    }
+
+    button {
+      background-color: #b30000;
+      color: #fff;
+      font-size: 1em;
+      border: none;
+      padding: 12px 20px;
+      margin: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #800000;
+    }
+
+    #drawn-words {
+      margin-top: 20px;
+      text-align: left;
+      max-height: 300px;
+      overflow-y: auto;
+      border-top: 2px solid #ccc;
+      padding-top: 10px;
+    }
+
+    .word-item {
+      padding: 5px 0;
+      border-bottom: 1px dotted #ccc;
+    }
+  </style>
+</head>
+<body>
+  <h1>Bingo Literário</h1>
+  <div id="bingo-container">
+    <div id="last-draw">Clique para iniciar o sorteio</div>
+    <button onclick="drawWord()">Sortear Palavra</button>
+    <button onclick="restartGame()">Recomeçar</button>
+    <div id="drawn-words"></div>
+  </div>
+
+  <script>
+    const words = [
+      "Spleen", "Mal do Século", "Byronista", "Melancolia", "Morbidez",
+      "Nostalgia", "Infância", "Escapismo", "Tédio", "pálpebra demente",
+      "deserto lodaçal", "leito pavoroso", "Álvares de Azevedo", "Lira dos Vinte Anos",
+      "Casimiro de Abreu", "Junqueira Freire", "Fagundes Varela", "Meus Oito Anos",
+      "Inspirações do Claustro", "Condoreira", "Abolicionista", "Victor Hugo",
+      "Liberdade", "Hipérboles", "Simbolismos", "Poeta-messias", "Eloquência",
+      "Panfletário", "Navio Negreiro", "Castro Alves", "Nautas", "Albatroz",
+      "Açoite", "Orquestra irônica", "Alviverde", "Colombo"
+    ];
+
+    let availableWords = [...words];
+    let drawnWords = [];
+
+    function drawWord() {
+      if (availableWords.length === 0) {
+        document.getElementById('last-draw').innerText = "Todas as palavras foram sorteadas!";
+        return;
+      }
+      const index = Math.floor(Math.random() * availableWords.length);
+      const word = availableWords.splice(index, 1)[0];
+      drawnWords.unshift(word);
+
+      document.getElementById('last-draw').innerText = word;
+
+      const list = drawnWords.map(w => `<div class="word-item">${w}</div>`).join('');
+      document.getElementById('drawn-words').innerHTML = list;
+    }
+
+    function restartGame() {
+      availableWords = [...words];
+      drawnWords = [];
+      document.getElementById('last-draw').innerText = "Clique para iniciar o sorteio";
+      document.getElementById('drawn-words').innerHTML = "";
+    }
+  </script>
+</body>
+</html>
