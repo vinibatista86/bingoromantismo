@@ -26,7 +26,7 @@
       border: 4px solid #b30000;
       border-radius: 15px;
       padding: 20px;
-      max-width: 700px;
+      max-width: 800px;
       width: 100%;
       box-shadow: 0 0 15px rgba(0,0,0,0.2);
       text-align: center;
@@ -57,17 +57,41 @@
     }
 
     #drawn-words {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 10px;
       margin-top: 20px;
       text-align: left;
-      max-height: 300px;
-      overflow-y: auto;
       border-top: 2px solid #ccc;
       padding-top: 10px;
     }
 
     .word-item {
-      padding: 5px 0;
+      padding: 5px;
       border-bottom: 1px dotted #ccc;
+    }
+
+    #tie-breaker-section {
+      margin-top: 30px;
+      border-top: 2px solid #ccc;
+      padding-top: 20px;
+    }
+
+    #tie-breaker-result {
+      font-size: 1.2em;
+      color: #007700;
+      font-weight: bold;
+      margin-top: 10px;
+      text-align: left;
+    }
+
+    input[type="number"] {
+      width: 60px;
+      padding: 5px;
+      font-size: 1em;
+      margin-left: 10px;
+      border-radius: 5px;
+      border: 1px solid #aaa;
     }
   </style>
 </head>
@@ -77,7 +101,16 @@
     <div id="last-draw">Clique para iniciar o sorteio</div>
     <button onclick="drawWord()">Sortear Palavra</button>
     <button onclick="restartGame()">Recomeçar</button>
+
     <div id="drawn-words"></div>
+
+    <div id="tie-breaker-section">
+      <h2>Desempate</h2>
+      <label for="numPlayers">Número de empatados:</label>
+      <input type="number" id="numPlayers" min="1" value="2">
+      <button onclick="drawTieBreakers()">Sortear Números</button>
+      <div id="tie-breaker-result"></div>
+    </div>
   </div>
 
   <script>
@@ -115,6 +148,24 @@
       drawnWords = [];
       document.getElementById('last-draw').innerText = "Clique para iniciar o sorteio";
       document.getElementById('drawn-words').innerHTML = "";
+      document.getElementById('tie-breaker-result').innerHTML = "";
+      document.getElementById('numPlayers').value = 2;
+    }
+
+    function drawTieBreakers() {
+      const num = parseInt(document.getElementById('numPlayers').value);
+      if (isNaN(num) || num <= 0) {
+        document.getElementById('tie-breaker-result').innerText = "Informe um número válido de empatados.";
+        return;
+      }
+
+      let results = [];
+      for (let i = 1; i <= num; i++) {
+        const n = Math.floor(Math.random() * 100) + 1;
+        results.push(`Pessoa ${i}: ${n}`);
+      }
+
+      document.getElementById('tie-breaker-result').innerHTML = results.map(r => `<div>${r}</div>`).join('');
     }
   </script>
 </body>
